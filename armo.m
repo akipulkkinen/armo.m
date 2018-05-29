@@ -8,15 +8,6 @@ function [ret] = armo(n);
 % defined as well will return the quote as string instead of
 % displaying it.
 
-% Initiate new persisten seed based on the clock on the first
-% call -- Does not affect default behaviour of MATLAB RNG 
-persistent RNG;
-defrng = RandStream.getDefaultStream();
-if(isempty(RNG));
-  RNG = RandStream('swb2712', 'seed', sum(100 * clock));
-end;
-RandStream.setDefaultStream(RNG);
-
 % Get randomized or n:th quotation 
 lines = get_quotes();
 N = length(lines);
@@ -25,6 +16,7 @@ if(nargin == 0);
 else;
   ind = max([1, min([N, n])]);
 end;
+
 % Display or return quotation
 if(nargout == 0);
   disp(lines{ind});
@@ -32,8 +24,6 @@ else;
   ret = lines{ind};
 end;
 
-% Restore RNG of the workspace
-RandStream.setDefaultStream(defrng);
 
 
 
